@@ -41,7 +41,8 @@ app.get('/test',function(req,res){
     res.send("Hello world");
 })
 
-app.get('/bill',require('./routes/billApi').storeBill);
+app.post('/store/bill',require('./routes/billApi').storeBill);
+app.get('/bill',require('./routes/billApi').getBill);
 
 
 
