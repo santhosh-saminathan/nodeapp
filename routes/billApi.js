@@ -9,19 +9,22 @@ const storeBill = (req, res) => {
 
     BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
         if (event === null) {
+
+            console.log("ajshaskcjam,sca",req.body);
             let billData = {
                 'invoice': req.body.invoice,
                 'createdDate': new Date(Date.now()),
                 'updatedDate': new Date(Date.now()),
                 'totalAmount': req.body.totalAmount,
                 'cgst': req.body.cgst,
+                'totWithGst':req.body.totWithGst,
                 'sgst': req.body.sgst,
                 'items': req.body.items,
                 'companyName': req.body.companyName,
                 'supplyDate': new Date(Date.now(req.body.supplyDate)),
-                'yourDcNumber': req.body,
+                'yourDcNumber': req.body.yourDcNumber,
                 'yourDcDate': new Date(Date.now(req.body.yourDcDate)),
-                'ourDcNumber': req.body,
+                'ourDcNumber': req.body.ourDcNumber,
                 'ourDcDate': new Date(Date.now(req.body.ourDcDate)),
                 'version': 0,
             }
@@ -43,6 +46,7 @@ const storeBill = (req, res) => {
                     'totalAmount': req.body.totalAmount,
                     'cgst': req.body.cgst,
                     'sgst': req.body.sgst,
+                    'totWithGst':req.body.totWithGst,
                     'items': req.body.items,
                     'companyName': req.body.companyName,
                     'supplyDate': new Date(Date.now(req.body.supplyDate)),

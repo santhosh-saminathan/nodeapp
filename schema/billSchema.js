@@ -17,6 +17,7 @@ const bill = new Schema({
     'ourDcNumber': Number,
     'ourDcDate': Date,
     'version': Number,
+    'totWithGst':Number
 
 }, { collection: 'Bill' });
 

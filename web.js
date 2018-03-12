@@ -26,7 +26,8 @@ var billSchema = require(path.resolve('./schema/billSchema.js'));
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://vinayaga:vinayaga@ds261118.mlab.com:61118/vinayaga');
+// mongoose.connect('mongodb://vinayaga:vinayaga@ds261118.mlab.com:61118/vinayaga');
+mongoose.connect('mongodb://localhost/test1');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
