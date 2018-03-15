@@ -73,11 +73,14 @@ const storeBill = (req, res) => {
 }
 
 const getBill = (req, res) => {
-    BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
+    console.log("Get bill")
+    BillCollection.find({"supplyDate": {"$gte": new Date(13/3/2018), "$lt": new Date(15/3/2018)}}, function (err, event) {
         if (err || event === null) {
             console.log(err);
+            res.send(404).json(err);
         } else {
-            console.log(event);
+            console.log("success data");
+            res.json(200,event);
         }
     });
 }
