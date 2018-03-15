@@ -43,7 +43,7 @@ app.get('/test',function(req,res){
 })
 
 app.post('/store/bill',require('./routes/billApi').storeBill);
-app.get('/bill',require('./routes/billApi').getBill);
+app.post('/bill',require('./routes/billApi').getBill);
 
 
 

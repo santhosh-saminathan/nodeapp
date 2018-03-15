@@ -72,9 +72,28 @@ const storeBill = (req, res) => {
 
 }
 
+
+// BillCollection.find({"supplyDate": {"$gte": new Date("2018-3-12 00:00:00Z"), "$lte": new Date("2018-3-12 23:59:59Z")}}, function (err, event) {
+//     if (err || event === null) {
+//         console.log(err);
+//         //res.send(404).json(err);
+//     } else {
+//         console.log("success data",event);
+//         //res.json(200,event);
+//     }
+// });
+
 const getBill = (req, res) => {
-    console.log("Get bill")
-    BillCollection.find({"supplyDate": {"$gte": new Date(13/3/2018), "$lt": new Date(15/3/2018)}}, function (err, event) {
+   
+    console.log("Get bill",req.body);
+    let startYear  = req.body.startYear;
+    let startMonth = req.body.startMonth;
+    let startDate =req.body.startDate ;
+    let endYear = req.body.lastYear;
+    let endMonth = req.body.lastMonth;
+    let endDate = req.body.lastDate;
+
+    BillCollection.find({"supplyDate": {"$gte": new Date((startYear+'-'+startMonth+'-'+startDate+" 00:00:00Z").toString()), "$lte": new Date((endYear+'-'+endMonth+'-'+endDate+" 00:00:00Z").toString())}}, function (err, event) {
         if (err || event === null) {
             console.log(err);
             res.send(404).json(err);
