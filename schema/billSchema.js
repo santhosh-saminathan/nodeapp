@@ -11,11 +11,11 @@ const bill = new Schema({
     'sgst': Number,
     'items': [],
     'companyName': String,
-    'supplyDate': Date,
+    'supplyDate': String,
     'yourDcNumber': Number,
-    'yourDcDate': Date,
+    'yourDcDate': String,
     'ourDcNumber': Number,
-    'ourDcDate': Date,
+    'ourDcDate': String,
     'version': Number,
     'totWithGst':Number
 
