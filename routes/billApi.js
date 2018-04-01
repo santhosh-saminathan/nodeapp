@@ -10,6 +10,7 @@ const storeBill = (req, res) => {
     BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
         if (event === null) {
 
+            console.log("inside new bill")
 
             let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
             let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
@@ -35,13 +36,16 @@ const storeBill = (req, res) => {
             let BillDocument = new BillCollection(billData);
             BillDocument.save((error, saved) => {
                 if (error) {
+                    res.json(400, { 'status': 'error', 'data': 'Failed to store data' });
+
                 }
                 else {
-                    res.send(saved);
+                    res.json(200, saved);
                 }
             })
 
         } else {
+            console.log("bill already exists")
             let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
             let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
             let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
@@ -79,31 +83,6 @@ const storeBill = (req, res) => {
 }
 
 
-// BillCollection.find({"supplyDate": {"$gte": "2018-03-17", "$lte": "2018-03-17"}}, function (err, event) {
-//     if (err || event === null) {
-//         console.log(err);
-//         //res.send(404).json(err);
-//     } else {
-//         console.log("success data",event);
-//         //res.json(200,event);
-//     }
-// });
-
-// BillCollection.find({}, function (err, event) {
-//     if (err || event === null) {
-//         console.log(err);
-//         res.send(404).json(err);
-//     } else {
-//         //console.log("success data",event);
-//        // res.json(200,event);
-//        event.forEach(function(data){
-//            if(new Date(data.supplyDate) >= new Date('2018-03-01') && new Date(data.supplyDate) <= new Date('2018-03-31')){
-//                console.log("condition pased");
-//            }
-//        })
-//     }
-// });
-
 const getBill = (req, res) => {
 
     let startYear = req.body.startYear.toString();
@@ -134,7 +113,18 @@ const getBill = (req, res) => {
     });
 }
 
+const deleteInvoiceBill = (req, res) => {
+    BillCollection.findOneAndRemove({ 'invoice': req.body.invoice }, function (err, event) {
+        if (err) {
+            res.send(404).json(err);
+        } else {
+            res.json(200, event)
+        }
+    });
+}
+
 module.exports = {
     storeBill: storeBill,
-    getBill: getBill
+    getBill: getBill,
+    deleteInvoiceBill: deleteInvoiceBill
 }

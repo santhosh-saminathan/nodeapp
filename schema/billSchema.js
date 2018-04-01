@@ -12,9 +12,9 @@ const bill = new Schema({
     'items': [],
     'companyName': String,
     'supplyDate': String,
-    'yourDcNumber': Number,
+    'yourDcNumber': String,
     'yourDcDate': String,
-    'ourDcNumber': Number,
+    'ourDcNumber': String,
     'ourDcDate': String,
     'version': Number,
     'totWithGst':Number
