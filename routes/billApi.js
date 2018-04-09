@@ -11,7 +11,7 @@ const storeBill = (req, res) => {
         console.log("*********",event);
         if (event === null) {
 
-            console.log("inside new bill",event.invoice)
+            console.log("inside new bill")
 
             let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
             let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
