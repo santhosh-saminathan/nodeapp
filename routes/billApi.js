@@ -8,9 +8,10 @@ const moment = require('moment');
 const storeBill = (req, res) => {
 
     BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
+        console.log("*********",event);
         if (event === null) {
 
-            console.log("inside new bill")
+            console.log("inside new bill",event.invoice)
 
             let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
             let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
