@@ -8,7 +8,6 @@ const moment = require('moment');
 const storeBill = (req, res) => {
 
     BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
-        console.log("*********",event);
         if (event === null) {
 
             console.log("inside new bill")
@@ -46,7 +45,7 @@ const storeBill = (req, res) => {
             })
 
         } else {
-            console.log("bill already exists")
+            console.log("bill already exists in store api")
             let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
             let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
             let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
@@ -124,8 +123,55 @@ const deleteInvoiceBill = (req, res) => {
     });
 }
 
+
+const getSingleBill = (req, res) => {
+    BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
+        if (err) {
+            res.send(404).json(err);
+        } else {
+            res.json(200, event)
+        }
+    });
+}
+
+const updateBill = (req, res) => {
+    console.log("bill update")
+    let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
+    let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
+    let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
+
+    BillCollection.findOneAndUpdate({
+        'invoice': req.body.invoice
+    }, {
+            'updatedDate': new Date(Date.now()),
+            'totalAmount': req.body.totalAmount,
+            'cgst': req.body.cgst,
+            'sgst': req.body.sgst,
+            'totWithGst': req.body.totWithGst,
+            'items': req.body.items,
+            'companyName': req.body.companyName,
+            'supplyDate': supplyDt,
+            'yourDcNumber': req.body.yourDcNumber,
+            'yourDcDate': yourDcDt,
+            'ourDcNumber': req.body.ourDcNumber,
+            'ourDcDate': ourDcdt,
+            'version': 1,
+
+        }, { new: true })
+        .exec((error, updatedDetails) => {
+            if (error) {
+                res.json(400, { 'status': 'error', 'data': 'Failed to update likes' });
+            }
+            else {
+                res.json(200, updatedDetails);
+            }
+        })
+}
+
 module.exports = {
     storeBill: storeBill,
     getBill: getBill,
-    deleteInvoiceBill: deleteInvoiceBill
+    deleteInvoiceBill: deleteInvoiceBill,
+    getSingleBill: getSingleBill,
+    updateBill: updateBill
 }

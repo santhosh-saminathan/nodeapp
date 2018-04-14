@@ -46,7 +46,8 @@ app.post('/store/bill',require('./routes/billApi').storeBill);
 app.post('/bill',require('./routes/billApi').getBill);
 app.post('/invoice/delete',require('./routes/billApi').deleteInvoiceBill);
 
-
+app.post('/single/bill',require('./routes/billApi').getSingleBill);
+app.post('/update/bill',require('./routes/billApi').updateBill);
 
 app.listen(app.get('port'), () => {
     console.log('Express server started');
