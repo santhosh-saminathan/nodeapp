@@ -8,42 +8,42 @@ const moment = require('moment');
 const storeBill = (req, res) => {
 
     BillCollection.findOneAndRemove({ 'invoice': req.body.invoice }, function (err, event) {
-       
-            console.log("inside new bill")
 
-            let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
-            let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
-            let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
+        console.log("inside new bill")
 
-            let billData = {
-                'invoice': req.body.invoice,
-                'createdDate': new Date(Date.now()),
-                'updatedDate': new Date(Date.now()),
-                'totalAmount': req.body.totalAmount,
-                'cgst': req.body.cgst,
-                'totWithGst': req.body.totWithGst,
-                'sgst': req.body.sgst,
-                'items': req.body.items,
-                'companyName': req.body.companyName,
-                'supplyDate': supplyDt,
-                'yourDcNumber': req.body.yourDcNumber,
-                'yourDcDate': yourDcDt,
-                'ourDcNumber': req.body.ourDcNumber,
-                'ourDcDate': ourDcdt,
-                'version': 0,
+        let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
+        let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
+        let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
+
+        let billData = {
+            'invoice': req.body.invoice,
+            'createdDate': new Date(Date.now()),
+            'updatedDate': new Date(Date.now()),
+            'totalAmount': req.body.totalAmount,
+            'cgst': req.body.cgst,
+            'totWithGst': req.body.totWithGst,
+            'sgst': req.body.sgst,
+            'items': req.body.items,
+            'companyName': req.body.companyName,
+            'supplyDate': supplyDt,
+            'yourDcNumber': req.body.yourDcNumber,
+            'yourDcDate': yourDcDt,
+            'ourDcNumber': req.body.ourDcNumber,
+            'ourDcDate': ourDcdt,
+            'version': 0,
+        }
+        let BillDocument = new BillCollection(billData);
+        BillDocument.save((error, saved) => {
+            if (error) {
+                res.json(400, { 'status': 'error', 'data': 'Failed to store data' });
+
             }
-            let BillDocument = new BillCollection(billData);
-            BillDocument.save((error, saved) => {
-                if (error) {
-                    res.json(400, { 'status': 'error', 'data': 'Failed to store data' });
+            else {
+                res.json(200, saved);
+            }
+        })
 
-                }
-                else {
-                    res.json(200, saved);
-                }
-            })
 
-    
     });
 
     // BillCollection.findOne({ 'invoice': req.body.invoice }, function (err, event) {
@@ -152,6 +152,37 @@ const getBill = (req, res) => {
     });
 }
 
+
+const getBillByCompany = (req, res) => {
+
+    let startYear = req.body.startYear.toString();
+    let startMonth = parseInt(req.body.startMonth) < 10 ? 0 + req.body.startMonth.toString() : req.body.startMonth.toString();
+    let startDate = req.body.startDate.toString();
+    let endYear = req.body.lastYear.toString();
+    let endMonth = parseInt(req.body.lastMonth) < 10 ? 0 + req.body.lastMonth.toString() : req.body.lastMonth.toString();
+    let endDate = req.body.lastDate.toString();
+
+    let newArray = [];
+
+    BillCollection.find({ "companyName": req.body.companyName }, function (err, event) {
+        if (err || event === null) {
+            res.send(404).json(err);
+        } else {
+            let count = 0;
+            event.forEach(function (data) {
+                count++;
+                if (new Date(data.supplyDate) >= new Date(startYear + '-' + startMonth + '-' + startDate) && new Date(data.supplyDate) <= new Date(endYear + '-' + endMonth + '-' + endDate)) {
+                    newArray.push(data);
+                }
+            })
+
+            if (event.length === count) {
+                res.json(200, newArray);
+            }
+        }
+    });
+}
+
 const deleteInvoiceBill = (req, res) => {
     BillCollection.findOneAndRemove({ 'invoice': req.body.invoice }, function (err, event) {
         if (err) {
@@ -212,5 +243,6 @@ module.exports = {
     getBill: getBill,
     deleteInvoiceBill: deleteInvoiceBill,
     getSingleBill: getSingleBill,
-    updateBill: updateBill
+    updateBill: updateBill,
+    getBillByCompany: getBillByCompany
 }

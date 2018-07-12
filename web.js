@@ -26,28 +26,30 @@ var billSchema = require(path.resolve('./schema/billSchema.js'));
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://vinayaga:vinayaga@ds261118.mlab.com:61118/vinayaga');
-//mongoose.connect('mongodb://localhost/test1');
+// mongoose.connect('mongodb://vinayaga:vinayaga@ds261118.mlab.com:61118/vinayaga');
+mongoose.connect('mongodb://localhost/test1');
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
- console.log("we are connected to database");
+db.once('open', function () {
+    console.log("we are connected to database");
 });
 
 
 
 
-app.get('/test',function(req,res){
+app.get('/test', function (req, res) {
     res.send("Hello world");
 })
 
-app.post('/store/bill',require('./routes/billApi').storeBill);
-app.post('/bill',require('./routes/billApi').getBill);
-app.post('/invoice/delete',require('./routes/billApi').deleteInvoiceBill);
+app.post('/store/bill', require('./routes/billApi').storeBill);
+app.post('/bill', require('./routes/billApi').getBill);
+app.post('/invoice/delete', require('./routes/billApi').deleteInvoiceBill);
 
-app.post('/single/bill',require('./routes/billApi').getSingleBill);
-app.post('/update/bill',require('./routes/billApi').updateBill);
+app.post('/single/bill', require('./routes/billApi').getSingleBill);
+app.post('/update/bill', require('./routes/billApi').updateBill);
+
+app.post('/bill/company', require('./routes/billApi').getBillByCompany);
 
 app.listen(app.get('port'), () => {
     console.log('Express server started');
