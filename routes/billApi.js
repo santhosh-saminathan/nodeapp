@@ -9,8 +9,6 @@ const storeBill = (req, res) => {
 
     BillCollection.findOneAndRemove({ 'invoice': req.body.invoice }, function (err, event) {
 
-        console.log("inside new bill")
-
         let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
         let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
         let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
@@ -164,6 +162,7 @@ const getBillByCompany = (req, res) => {
 
     let newArray = [];
 
+
     BillCollection.find({ "companyName": req.body.companyName }, function (err, event) {
         if (err || event === null) {
             res.send(404).json(err);
@@ -205,7 +204,6 @@ const getSingleBill = (req, res) => {
 }
 
 const updateBill = (req, res) => {
-    console.log("bill update")
     let supplyDt = (req.body.supplyDate.split('/')[2] + '-' + req.body.supplyDate.split('/')[1] + '-' + req.body.supplyDate.split('/')[0]).toString();
     let yourDcDt = (req.body.yourDcDate.split('/')[2] + '-' + req.body.yourDcDate.split('/')[1] + '-' + req.body.yourDcDate.split('/')[0]).toString();
     let ourDcdt = req.body.ourDcDate ? (req.body.ourDcDate.split('/')[2] + '-' + req.body.ourDcDate.split('/')[1] + '-' + req.body.ourDcDate.split('/')[0]).toString() : null;
