@@ -26,7 +26,8 @@ var billSchema = require(path.resolve('./schema/billSchema.js'));
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://vinayaga:vinayaga@ds261118.mlab.com:61118/vinayaga');
+//mongoose.connect('mongodb://vinayaga:vinayaga@ds261118.mlab.com:61118/vinayaga');
+mongoose.connect('mongodb://uf0om98rda4byqq:5JKL1DEbtdVbi2UhBxMy@bykyoy4wqmgjbty-mongodb.services.clever-cloud.com:27017/bykyoy4wqmgjbty');
 // mongoose.connect('mongodb://localhost/test1');
 
 
